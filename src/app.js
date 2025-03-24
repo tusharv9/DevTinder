@@ -1,27 +1,31 @@
 const express = require('express');
-
+const connectDB = require("./config/database");
 const app = express();
+const User =require("./models/user");
 
-app.get("/getUserData",(req,res)=>{
-    try{
-        throw new Error("fjAHS");
-    res.send("User Data Send");
-    }
-    catch(err){
-        res.status(500).send("Some error contact support team");
-    }
+app.post("/signup", async(req,res)=>{
+    const user = new User({
+        firstName: "Tushar",
+        lastName: "Vashisht",
+        emailId: "tushar@gmail.com",
+        password: "1234567",
+    });
+    await user.save();
+    res.send("User added successfully");
 })
 
-app.use("/",(err,req,res,next)=>{
-    if(err){
-        res.status(500).send("something went wrong");
-    }
-})
-
-
+connectDB()
+.then(()=>{
+console.log("Database connection established...");
 app.listen(7777, ()=>{
     console.log("Server is successfully running on port 7777...");
 }); 
+})
+.catch(err=>{
+console.error("Database cannot be connected...");
+});
+
+
 
 // app.get('/user',(req,res)=>{
 //     // console.log(req.query);
@@ -89,3 +93,21 @@ app.listen(7777, ()=>{
 // (req,res)=>{
 //     res.send("Route Handler 2");
 // });
+
+
+//app.get("/getUserData",(req,res)=>{
+    //     try{
+    //         throw new Error("fjAHS");
+    //     res.send("User Data Send");
+    //     }
+    //     catch(err){
+    //         res.status(500).send("Some error contact support team");
+    //     }
+    // })
+    
+    // app.use("/",(err,req,res,next)=>{
+    //     if(err){
+    //         res.status(500).send("something went wrong");
+    //     }
+    // })
+    
